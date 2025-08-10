@@ -34,7 +34,7 @@ export const PropertySlider = ({ properties, title }: PropertySliderProps) => {
         </Link>
       </h2>
       <Carousel
-        opts={{ align: "start" }}
+        opts={{ align: "start", dragFree: true }}
         className="scrollbar-none flex snap-x overflow-x-auto py-3"
       >
         <CarouselContent className="-ml-3">

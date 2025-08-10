@@ -1,11 +1,10 @@
-import { Container } from "@/components/container";
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
   return (
-    <Container elem="main" className="min-h-main mx-auto items-center flex max-w-[500px] justify-center">
+    <div className="min-h-main flex items-center justify-center">
       {children}
-    </Container>
+    </div>
   );
 };
 

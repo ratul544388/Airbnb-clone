@@ -66,7 +66,7 @@ export function RegisterForm() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full max-w-lg mx-auto">
       <CardHeader>
         <CardTitle>Create Your Account</CardTitle>
         <CardDescription>

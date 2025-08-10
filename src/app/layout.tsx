@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <ImageKitProvider urlEndpoint={process.env.IMAGEKIT_URL_ENDPOINT}>
           <Header />
-          <Container>{children}</Container>
+          <Container elem="main">{children}</Container>
           <Footer />
           <Toaster />
         </ImageKitProvider>
