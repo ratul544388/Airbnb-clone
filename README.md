@@ -136,6 +136,3 @@ This project is licensed under the **MIT License**.
 
 **Author:** [@ratul544388](https://github.com/ratul544388)
 💌 *Star the repo if you like this project!*
-
-Do you want me to make that screenshot section for you?
-```
