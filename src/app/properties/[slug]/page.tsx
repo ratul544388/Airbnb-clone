@@ -1,3 +1,8 @@
+import { Metadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { cache } from "react";
+
 import { Heading } from "@/components/heading";
 import { Separator } from "@/components/ui/separator";
 import { placeholderAvatar } from "@/constants";
@@ -8,17 +13,13 @@ import { StickyReservationCard } from "@/features/properties/components/sticky-r
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/get-current-user";
 import { getPropertyDataInclude, Params } from "@/types";
-import Image from "next/image";
-import { notFound } from "next/navigation";
 
-const PropertyDetailsPage = async ({ params }: { params: Params }) => {
-  const { slug } = await params;
+const fetchProperty = cache(async (slug: string, userId?: string) => {
   const refinedSlug = slug.split("-").slice(1).join("-");
-  const user = await getCurrentUser();
-  const property = await db.property.findUnique({
+  return await db.property.findUnique({
     where: { slug: refinedSlug },
     include: {
-      ...getPropertyDataInclude(user.id),
+      ...getPropertyDataInclude(userId),
       owner: {
         select: {
           image: true,
@@ -27,12 +28,43 @@ const PropertyDetailsPage = async ({ params }: { params: Params }) => {
       },
     },
   });
+});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const user = await getCurrentUser({ required: false });
+  const property = await fetchProperty(slug, user?.id);
+
+  if (!property) {
+    return {
+      title: "Property Not Found | Airbnb Clone",
+      description: "This property does not exist.",
+    };
+  }
+
+  return {
+    title: `${property.title} | Airbnb Clone`,
+    description: property.description
+      ? property.description.slice(0, 160)
+      : "Book unique places to stay and enjoy unforgettable experiences.",
+  };
+}
+
+const PropertyDetailsPage = async ({ params }: { params: Params }) => {
+  const { slug } = await params;
+  const user = await getCurrentUser({ required: false });
+  const property = await fetchProperty(slug, user?.id);
+
   if (!property) {
     return notFound();
   }
 
   return (
-    <div className="py-5 max-w-[1100px] mx-auto">
+    <div className="mx-auto max-w-[1100px] py-5">
       <Heading>{property.title}</Heading>
       <PropertyGridView images={property.images} />
       <Heading elem="h2" className="mt-3">
@@ -43,7 +75,7 @@ const PropertyDetailsPage = async ({ params }: { params: Params }) => {
           <p className="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
             <span>{property.guestCount} Guest</span>
             <span className="-translate-y-0.5">.</span>
-            <span>{property.bedroomCount} Bathrooms</span>
+            <span>{property.bedroomCount} Bedrooms</span>
             {!!property.bathroomCount && (
               <>
                 <span className="-translate-y-0.5">.</span>

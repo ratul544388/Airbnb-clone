@@ -5,7 +5,7 @@ import { Container } from "./container";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-background text-foreground">
+    <footer className="border-t bg-background text-foreground mt-[200px]">
       <Container className="mx-auto px-6 py-12 flex flex-wrap gap-10">
         <div>
           <h3 className="mb-6 text-lg font-semibold text-primary">Support</h3>

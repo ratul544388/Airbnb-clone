@@ -4,6 +4,8 @@ import { getCurrentUser } from "@/lib/get-current-user";
 import { getPropertyDataInclude, Params } from "@/types";
 import { notFound } from "next/navigation";
 
+
+
 const Page = async ({ params }: { params: Params }) => {
   const user = await getCurrentUser();
   const { property_id } = await params;

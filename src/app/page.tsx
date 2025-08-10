@@ -2,7 +2,14 @@ import Await from "@/components/await";
 import { getProperties } from "@/features/properties/actions";
 import { PropertySlider } from "@/features/properties/components/property-slider";
 import { PropertySliderSkeleton } from "@/features/properties/skeletons/property-slide-skeketon";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: "Home",
+  };
+};
 
 const getPropertyByCity = async (city: string) => {
   const properties = await getProperties({ city });
