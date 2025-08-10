@@ -1,6 +1,11 @@
+import Header from "@/components/header";
+import { ImageKitProvider } from "@imagekit/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
+import { Footer } from "@/components/footer";
+import { Container } from "@/components/container";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +32,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ImageKitProvider urlEndpoint={process.env.IMAGEKIT_URL_ENDPOINT}>
+          <Header />
+          <Container>{children}</Container>
+          <Footer />
+          <Toaster />
+        </ImageKitProvider>
       </body>
     </html>
   );
